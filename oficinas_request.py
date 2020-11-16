@@ -19,7 +19,7 @@ def timestamp():
 def download_providers_info():
     """
     Takes no arguments.
-    Downloads the index of maintenance service providers from the Brazilian aviation authority (ANAC), then itterates
+    Downloads the index of maintenance service providers from the Brazilian aviation authority (ANAC), then iterates
     over it, download the individual htmls containing the publicly available information about each of the said
     maintenance service providers.
     :return: None
@@ -51,7 +51,7 @@ def download_providers_info():
         # Retrieves providers from the index table
         service_providers = t.select('tr[onmouseover]')
 
-        # Creates a dictionary with providers' names and urls to the respectives informations pages
+        # Creates a dictionary with providers' names and urls to the respectives information pages
         for tag in service_providers:
             if tag.text.strip() not in addresses.keys():
                 addresses[tag.text.strip()] = 'https://sistemas.anac.gov.br/certificacao/AvGeral/' + \
