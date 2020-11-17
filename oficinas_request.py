@@ -529,7 +529,8 @@ def providers_info_to_excel(parsed_html_info):
                                                      status_to_id_dict[data[i]['Status']],
 
                                                      ))
-        service_providers_sheet.write(i+1, 18, datetime.datetime.now() - datetime.datetime(1899, 12, 31), datetime_format)
+        service_providers_sheet.write(i+1, 18, datetime.datetime.now() - datetime.datetime(1899, 12, 31),
+                                      datetime_format)
 
         print('\b' * len(s), end='')
     print('\033[92mDone\033[0m')
@@ -545,11 +546,11 @@ def providers_info_to_excel(parsed_html_info):
         if 'Convalidações estrangeiras' in service_provider:
             for covalidation in service_provider['Convalidações estrangeiras']:
                 foreign_covalidation_sheet.write_row(r, 0, (r,
-                                                             service_provider['id'],
-                                                             covalidation['Autoridade'],
-                                                             ))
+                                                            service_provider['id'],
+                                                            covalidation['Autoridade'],
+                                                            ))
                 foreign_covalidation_sheet.write(r, 3, covalidation['Validade'] - datetime.datetime(1899, 12, 31),
-                                                  date_format)
+                                                 date_format)
                 foreign_covalidation_sheet.write(r, 4, covalidation['Link'])
                 r += 1
         n += 1
