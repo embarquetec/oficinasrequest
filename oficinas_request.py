@@ -80,7 +80,7 @@ def download_providers_info():
 
     if len(os.listdir(this_folder_path)) > 0:
         for file in os.listdir('html_empresas'):
-            if file[-5:].lower() == '.html':
+                    if file[-5:].lower() == '.html':
                 os.rename(os.path.join(this_folder_path, file), os.path.join(new_folder_path, file))
 
     print(" - \033[92mDone\033[0m")
