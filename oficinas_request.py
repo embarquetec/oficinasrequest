@@ -66,12 +66,12 @@ def download_providers_info():
     # Create the default download directory if it not yet exists
     if not os.path.isdir('html_empresas'):
         os.mkdir('html_empresas')
-        os.mkdir('html_empresas\\previous')
-    elif not os.path.isdir('html_empresas\\previous'):
-        os.mkdir('html_empresas\\previous')
+        os.mkdir(os.path.join('html_empresas', 'previous'))
+    elif not os.path.isdir(os.path.join('html_empresas', 'previous')):
+        os.mkdir(os.path.join('html_empresas', 'previous'))
 
     this_folder_path = os.path.abspath('html_empresas')
-    new_folder_path = os.path.abspath('html_empresas\\previous')
+    new_folder_path = os.path.abspath(os.path.join('html_empresas', 'previous'))
 
     # Clean the download directory, to ensure no service provider information is parsed more than once
     if len(os.listdir(new_folder_path)) > 0:
@@ -80,7 +80,7 @@ def download_providers_info():
 
     if len(os.listdir(this_folder_path)) > 0:
         for file in os.listdir('html_empresas'):
-                    if file[-5:].lower() == '.html':
+            if file[-5:].lower() == '.html':
                 os.rename(os.path.join(this_folder_path, file), os.path.join(new_folder_path, file))
 
     print(" - \033[92mDone\033[0m")
@@ -94,11 +94,11 @@ def download_providers_info():
         print(s, end='')
         # Write information to HTML files in the default download directory
         while True:
-            with open(f'html_empresas\\{empresa.replace("/", "")}.html', 'w', encoding='utf-8') as fileHandle:
+            with open(os.path.join('html_empresas', f'{empresa.replace("/", "")}.html'), 'w', encoding='utf-8') as fileHandle:
                 fileHandle.write(BeautifulSoup(r.get(addresses[empresa]).content.decode('latin-1', 'ignore'),
                                                'html.parser').prettify())
 
-            if len(open(f'html_empresas\\{empresa.replace("/", "")}.html', 'r', encoding='utf-8').readlines()) > 0:
+            if len(open(os.path.join('html_empresas', f'{empresa.replace("/", "")}.html'), 'r', encoding='utf-8').readlines()) > 0:
                 break
 
         n += 1
@@ -165,7 +165,7 @@ def parse_providers_info():
             s = f'({n}/{len(empresas_file_list)} - {round(n/len(empresas_file_list)*100, 2)}%) - {file}'
             print(s, end='')
             # Read HTML file
-            with open(f'html_empresas\\{file}', 'r', encoding='utf-8') as fileHandle:
+            with open(os.path.join('html_empresas', f'{file}'), 'r', encoding='utf-8') as fileHandle:
                 html = BeautifulSoup(fileHandle.read(), 'html.parser')
 
             info_dict = dict()
@@ -284,6 +284,10 @@ def parse_providers_info():
 
         # Skip exception raised when trying to read a folder
         except PermissionError:
+            print('\b'*len(s), end='')
+            continue
+
+        except IsADirectoryError:
             print('\b'*len(s), end='')
             continue
 
@@ -520,7 +524,7 @@ def providers_info_to_excel(parsed_html_info):
                                                      data[i]['FAX'],
                                                      data[i]['País'],
                                                      data[i]['Website'],
-                                                     data[i]['E-mail'],
+                                                     data[i]['E-mail'] if 'E-mail' in data[1] else '',
                                                      data[i]['Tipo de Base'],
                                                      data[i]['Serviços'],
                                                      data[i]['Certificado'],
